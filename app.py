@@ -1,15 +1,17 @@
-<<<<<<< HEAD
-from flask import Flask
+import os
+import problem_model
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123abc@localhost/mathapp'
+#Must change this line in order to work with your local database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/dbname'
 db = SQLAlchemy(app)
 
 @app.route('/')
 def hello_world():
     """ Returns root endpoint HTML """
-    
+
     # sample problem 
     prob = "5+3"
 
@@ -24,6 +26,16 @@ def give_user_feedback(user_text):
         This function takes the answer submited by user and 
         returns the feedback and correct answer
     '''
+
+    '''
+    Any example of getting a problem from database with id=1 
+
+    probObj = problem_model.Problem.query.filter_by(id=1).first()
+    print(probObj.question)
+    print(probObj.answer)
+
+    '''
+
     
     user_ans = int(user_text)
     
