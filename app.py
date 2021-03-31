@@ -8,49 +8,26 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/dbname'
 db = SQLAlchemy(app)
 
-@app.route('/')
-def hello_world():
-    """ Returns root endpoint HTML """
-
-    # sample problem 
-    prob = "5+3"
-
-    return render_template(
-        "index.html",
-        problem = prob,
-    )
-
-@app.route('/submit/<user_text>')
-def give_user_feedback(user_text):
+@app.route('/problem/')
+def new_problem():
+    ''' 
+        this function provies a problem to the user upon request
     '''
-        This function takes the answer submited by user and 
-        returns the feedback and correct answer
-    '''
-
-    '''
-    Any example of getting a problem from database with id=1 
-
+    
+    # TODO get a random question from database
+    # getting question from darabase with id = 1
     probObj = problem_model.Problem.query.filter_by(id=1).first()
-    print(probObj.question)
-    print(probObj.answer)
 
-    '''
-
-    
-    user_ans = int(user_text)
-    
-    # TODO get the correct answer from database
-    # sample answer
-    correct_ans = 8
-    
-    if user_ans == correct_ans:
-        feed = "Correct Answer"
-    else:
-        feed = "Wrong Answer"
+    quesId = 1
+    typeOfQues = probObj.ptype
+    ques = probObj.question
+    ans = probObj.answer
 
     return {
-        'answer': correct_ans,
-        'feedack': feed
+        "id":quesId,
+        "type":typeOfQues,
+        "question": ques,
+        "answer":ans
     }
 
 if __name__ == '__main__': 
