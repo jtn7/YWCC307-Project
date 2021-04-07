@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
+import random
 
 load_dotenv(find_dotenv())  # This is to load your env variables from .env
 
@@ -18,17 +19,19 @@ db = SQLAlchemy(app)
 import problem_model
 db.create_all()
 
-@app.route('/problem/')
+@app.route('/')
 def new_problem():
     ''' 
         this function provies a problem to the user upon request
     '''
     
-    # TODO get a random question from database
-    # getting question from darabase with id = 1
-    probObj = problem_model.Problem.query.filter_by(id=1).first()
+    # get a random question from database
+    totalProblems = problem_model.Problem.query.count()
+    randomProblemID = random.randint(1, totalProblems)
+    
+    probObj = problem_model.Problem.query.filter_by(id=randomProblemID).first()
 
-    quesId = 1
+    quesId = randomProblemID
     typeOfQues = probObj.ptype
     ques = probObj.question
     ans = probObj.answer
