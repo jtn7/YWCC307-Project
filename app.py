@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 import problem_model
 db.create_all()
 
-@app.route('/')
+@app.route('/problem/')
 def new_problem():
     ''' 
         this function provies a problem to the user upon request
