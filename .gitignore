@@ -1,1 +1,4 @@
 __pycache__/
+sql.env
+.env
+.env.development.local

@@ -1,12 +1,22 @@
 import os
-import problem_model
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())  # This is to load your env variables from .env
 
 app = Flask(__name__)
 #Must change this line in order to work with your local database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/dbname'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost/dbname'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+# Gets rid of a warning
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
+
+
+import problem_model
+db.create_all()
 
 @app.route('/problem/')
 def new_problem():
