@@ -11,3 +11,13 @@ class Problem(db.Model):
     def __repr__(self): 
         return '<Problem %r>' % self.question
     
+
+class App_User(db.Model): 
+    __tablename__ = 'app_user'
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), nullable=False)
+    point = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self): 
+        return '<User %r>' % self.username
