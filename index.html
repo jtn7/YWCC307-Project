@@ -152,7 +152,7 @@
 
 			answered = false
 
-			fetch("https://frozen-savannah-62936.herokuapp.com/problem/")
+			fetch("https://frozen-savannah-62936.herokuapp.com/problem")
 			.then(resp => resp.json())
 			.then(problem => {
 				problemDiv.textContent = problem.question
