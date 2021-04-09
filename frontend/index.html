@@ -134,23 +134,30 @@
 		let answer
 		let answered = false
 
+		// Cache Element Nodes
+		let answerContainer = document.body.querySelector('.answer-container')
+		let problemDiv = document.body.querySelector('.math-container > .problem')
+		let correctImg = document.getElementById('correct')
+		let incorrectImg = document.getElementById('incorrect')
+		let userAnswer = document.getElementById('userAnswer')
+		let answerDiv = document.getElementById('answer')
+
 		nextProblem()
 
 		function nextProblem() {
-			document.body.querySelector('.answer-container').style.visibility = 'hidden'
-			document.getElementById('correct').style.visibility = 'hidden'
-			document.getElementById('incorrect').style.visibility = 'hidden'
-			document.getElementById('userAnswer').value = ''
+			answerContainer.style.visibility = 'hidden'
+			correctImg.style.visibility = 'hidden'
+			incorrectImg.style.visibility = 'hidden'
+			userAnswer.value = ''
 
 			answered = false
 
-			fetch("http://localhost:8080/problem")
+			fetch("https://frozen-savannah-62936.herokuapp.com/problem/")
 			.then(resp => resp.json())
 			.then(problem => {
-				let question = document.body.querySelector('.math-container > .problem')
-				question.textContent = problem.question
+				problemDiv.textContent = problem.question
 				answer = problem.answer
-				document.body.querySelector('#answer').textContent = answer
+				answerDiv.textContent = answer
 			})
 		}
 
@@ -158,19 +165,19 @@
 			if (answered) {return}
 			answered = true
 
-			let userAnswer = document.body.querySelector('#userAnswer').value
+			let ua = userAnswer.value
 
-			if (userAnswer === answer) {
-				document.body.querySelector('#correct').style.visibility = 'visible'
+			if (ua === answer) {
+				correctImg.style.visibility = 'visible'
 			} else {
-				document.body.querySelector('#incorrect').style.visibility = 'visible'
+				incorrectImg.style.visibility = 'visible'
 			}
-			document.body.querySelector('.answer-container').style.visibility = 'visible'
+			answerContainer.style.visibility = 'visible'
 		}
 
 		function seeAnswer() {
 			answered = true
-			document.body.querySelector('.answer-container').style.visibility = 'visible'
+			answerContainer.style.visibility = 'visible'
 		}
 	</script>
 </body>
