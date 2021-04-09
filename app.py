@@ -4,6 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api
 from dotenv import load_dotenv, find_dotenv
+from flask_cors import CORS 
 
 load_dotenv(find_dotenv())  # This is to load your env variables from .env
 
@@ -16,7 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 api = Api(app)
 db = SQLAlchemy(app)
-
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 import problem_model
 db.create_all()
