@@ -18,6 +18,8 @@ class App_User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False)
     point = db.Column(db.Integer, nullable=False)
+    attempt = db.Column(db.Integer, nullable=False)
+    streak = db.Column(db.Integer, nullable=False)
 
     def __repr__(self): 
         return '<User %r>' % self.username
