@@ -6,6 +6,15 @@
 2. `pip install Flask-SQLAlchemy`
 3. `pip install psycopg2`
 
+## Endpoints 
+`GET /problem ` - Returns a single random problem.
+`POST  /login` - Returns user ID and username only. Expects parameter 'username' in the HTTP body, in order to fetch user info. 
+`GET /user/<user_ID>` - Returns user info: username, points, streak, attempts. 
+`PUT /user/<user_ID>/point` - Updates user's point attribute. Expects parameter 'point' in HTTP body. 
+`PUT /user/<user_ID>/streak` - Updates user's streak attribute. Expects parameter 'streak' in HTTP body. 
+`PUT /user/<user_ID>/attempt` - Updates user's attempt attribute. Expects parameter 'attempt' in HTTP body. 
+
+
 ## Database Req 
 Must have a local postgresql database set up. 
 On app.py replace line 
