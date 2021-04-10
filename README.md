@@ -36,9 +36,17 @@ problem2 = Problem(ptype='algebra', question='3*x+1=10', answer='3')
 
 problem3 = Problem(ptype='algebra', question='5*x=100', answer='20')
 
+user1 = App_User(username='John', point=0, attempt=0, streak=0) 
+user2 = App_User(username='Jane', point=0, attempt=0, streak=0) 
+user3 = App_User(username='Jill', point=0, attempt = 0, streak=0) 
+
+
 db.session.add(problem1)
 db.session.add(problem2)
 db.session.add(problem3)
+db.session.add(user1)
+db.session.add(user2)
+db.session.add(user3)
 db.session.commit()
 ```
 
