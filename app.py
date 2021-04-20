@@ -42,20 +42,6 @@ def getUserbyName(inputUser):
 def getUserbyID(inputID): 
     return db.session.query(problem_model.App_User).filter_by(id=inputID).first()
 
-def getAllUsers():
-    ''' get all users from database in descending order (according to points) '''
-    all_user = problem_model.App_User.query.order_by(problem_model.App_User.point.desc()).all()
-    users = []
-    for person in all_user:
-        d = {
-            "username": person.username,
-            "point": person.point,
-            "attempt": person.attempt,
-            "streak": person.streak
-        }
-        users.append(d)
-    return users
-    
 def addNewUser(name, imgId):
     ''' helper function to add a new user to database'''
     user = getUserbyName(name)
@@ -77,6 +63,22 @@ class User(Resource):
         userObj['profileImgID'] = imgprof.img_url 
 
         return userObj
+        
+class AllUsers(Resource):
+    def get(self):
+        ''' get all users from database in descending order (according to points) '''
+        all_user = problem_model.App_User.query.order_by(problem_model.App_User.point.desc()).all()
+        users = []
+        for person in all_user:
+            d = {
+                "username": person.username,
+                "point": person.point,
+                "attempt": person.attempt,
+                "streak": person.streak,
+                "imageID": person.profileImgID
+            }
+            users.append(d)
+        return users
 
 class Login(Resource): 
     def post(self):
@@ -93,7 +95,8 @@ class Login(Resource):
 class UserStreak(Resource): 
     def put(self, user_ID):
         try:
-            new_streak = request.form['streak']
+            request_data = request.get_json()
+            new_streak = request_dat['streak']
             user = getUserbyID(user_ID)
             if user: 
                 user.streak = new_streak
@@ -104,8 +107,9 @@ class UserStreak(Resource):
 
 class UserPoint(Resource): 
     def put(self, user_ID): 
-        try: 
-            new_point = request.form['point']
+        try:
+            request_data = request.get_json()
+            new_point = request_data['point']
             user = getUserbyID(user_ID)
             if user: 
                 user.point = new_point
@@ -117,7 +121,8 @@ class UserPoint(Resource):
 class UserAttempts(Resource): 
     def put(self, user_ID): 
         try:
-            new_attempts = request.form['attempt']
+            request_data = request.get_json()
+            new_attempts = request_data['attempt']
             user = getUserbyID(user_ID)
             if user: 
                 user.attempt = new_attempts 
@@ -131,6 +136,7 @@ class UserAttempts(Resource):
 
 api.add_resource(Problem, '/problem')
 api.add_resource(Login, '/login')
+api.add_resource(AllUsers, '/allusers')
 api.add_resource(User, '/user/<string:user_ID>')
 api.add_resource(UserStreak, '/user/<string:user_ID>/streak')
 api.add_resource(UserPoint, '/user/<string:user_ID>/point')
@@ -138,7 +144,7 @@ api.add_resource(UserAttempts, '/user/<string:user_ID>/attempt')
 
 if __name__ == '__main__': 
     app.run(
-        #port = int(os.getenv('PORT', 8080)),
+        port = int(os.getenv('PORT', 8080)),
         #host = os.getenv("IP", '0.0.0.0'),
-        debug  = True
+        #debug  = True
     )

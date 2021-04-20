@@ -1,4 +1,15 @@
-from app import db
+import os
+from flask import Flask, request
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+#Must change this line in order to work with your local database
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://pat:password@localhost/dbname'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+# Gets rid of a warning
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 class Problem(db.Model): 
     __tablename__ = 'problem'
