@@ -126,7 +126,7 @@ class UserAttempts(Resource):
         
     
 
-api.add_resource(Problem, '/')
+api.add_resource(Problem, '/problem')
 api.add_resource(Login, '/login')
 api.add_resource(User, '/user/<string:user_ID>')
 api.add_resource(UserStreak, '/user/<string:user_ID>/streak')
@@ -135,7 +135,7 @@ api.add_resource(UserAttempts, '/user/<string:user_ID>/attempt')
 
 if __name__ == '__main__': 
     app.run(
-        port = int(os.getenv('PORT', 8080)),
-        host = os.getenv("IP", '0.0.0.0'),
+        #port = int(os.getenv('PORT', 8080)),
+        #host = os.getenv("IP", '0.0.0.0'),
         debug  = True
     )
