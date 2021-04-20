@@ -42,6 +42,28 @@ def getUserbyName(inputUser):
 def getUserbyID(inputID): 
     return db.session.query(problem_model.App_User).filter_by(id=inputID).first()
 
+def getAllUsers():
+    ''' get all users from database in descending order (according to points) '''
+    all_user = problem_model.App_User.query.order_by(problem_model.App_User.point.desc()).all()
+    users = []
+    for person in all_user:
+        d = {
+            "username": person.username,
+            "point": person.point,
+            "attempt": person.attempt,
+            "streak": person.streak
+        }
+        users.append(d)
+    return users
+    
+def addNewUser(name):
+    ''' helper function to add a new user to database'''
+    user = getUserbyName(name)
+    if not user:
+        new_user = problem_model.App_User(username=name, point=0, attempt=0, streak=0)
+        db.session.add(new_user)
+        db.session.commit()
+        
 class User(Resource): 
     def get(self, user_ID): 
         user = getUserbyID(user_ID)
@@ -56,15 +78,14 @@ class User(Resource):
 
 class Login(Resource): 
     def post(self):
-        inputname = request.form['username']
-        user = getUserbyName(inputname)
-        if user:
-            return{
-                'userID':user.id, 
-                'userName':user.username
-            }
+        request_data = request.get_json()
+        username = request_data["username"]
+        addNewUser(username)
+        user = getUserbyName(username)
         
-        abort(404, message="User {} doesn't exist".format(inputname))
+        return{
+            'userID':user.id, 
+        }
 
 class UserStreak(Resource): 
     def put(self, user_ID):
@@ -105,7 +126,7 @@ class UserAttempts(Resource):
         
     
 
-api.add_resource(Problem, '/problem')
+api.add_resource(Problem, '/')
 api.add_resource(Login, '/login')
 api.add_resource(User, '/user/<string:user_ID>')
 api.add_resource(UserStreak, '/user/<string:user_ID>/streak')
@@ -114,5 +135,8 @@ api.add_resource(UserAttempts, '/user/<string:user_ID>/attempt')
 
 if __name__ == '__main__': 
     app.run(
-        debug=True
+        port = int(os.getenv('PORT', 8080)),
+        host = os.getenv("IP", '0.0.0.0'),
+        use_reloader=True,
+        debug  = True
     )
