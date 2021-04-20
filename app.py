@@ -3,15 +3,15 @@ from random import randint
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api, abort
-from dotenv import load_dotenv, find_dotenv
+#from dotenv import load_dotenv, find_dotenv
 from flask_cors import CORS 
 
-load_dotenv(find_dotenv())  # This is to load your env variables from .env
+#load_dotenv(find_dotenv())  # This is to load your env variables from .env
 
 app = Flask(__name__)
 #Must change this line in order to work with your local database
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:password@localhost/dbname'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://pat:123abc@localhost/mathapp'
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 # Gets rid of a warning
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -45,12 +45,14 @@ def getUserbyID(inputID):
 class User(Resource): 
     def get(self, user_ID): 
         user = getUserbyID(user_ID)
-
+        imgprof = problem_model.Profile_Img.query.filter_by(id=user.profileImgID).first()
+        
         userObj = {}
         userObj['name'] = user.username
         userObj['points'] = user.point  
         userObj['streak'] = user.streak
-        userObj['attempts'] = user.attempt   
+        userObj['attempts'] = user.attempt
+        userObj['profileImgID'] = imgprof.img_url 
 
         return userObj
 

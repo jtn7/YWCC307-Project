@@ -20,6 +20,15 @@ class App_User(db.Model):
     point = db.Column(db.Integer, nullable=False)
     attempt = db.Column(db.Integer, nullable=False)
     streak = db.Column(db.Integer, nullable=False)
+    profileImgID = db.Column(db.Integer, db.ForeignKey('profile_img.id'))
 
     def __repr__(self): 
         return '<User %r>' % self.username
+
+
+class Profile_Img(db.Model):
+    __tablename__ = 'profile_img'
+
+    id = db.Column(db.Integer, primary_key=True)
+    img_url = db.Column(db.String, nullable = False) 
+    
