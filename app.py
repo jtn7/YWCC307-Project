@@ -56,11 +56,11 @@ def getAllUsers():
         users.append(d)
     return users
     
-def addNewUser(name):
+def addNewUser(name, imgId):
     ''' helper function to add a new user to database'''
     user = getUserbyName(name)
     if not user:
-        new_user = problem_model.App_User(username=name, point=0, attempt=0, streak=0)
+        new_user = problem_model.App_User(username=name, point=0, attempt=0, streak=0, profileImgID=imgId)
         db.session.add(new_user)
         db.session.commit()
         
@@ -82,7 +82,8 @@ class Login(Resource):
     def post(self):
         request_data = request.get_json()
         username = request_data["username"]
-        addNewUser(username)
+        imgId = request_data["profileImgID"]
+        addNewUser(username, imgId)
         user = getUserbyName(username)
         
         return{
