@@ -10,7 +10,7 @@ load_dotenv(find_dotenv())  # This is to load your env variables from .env
 
 app = Flask(__name__)
 #Must change this line in order to work with your local database
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://pat:password@localhost/dbname'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:password@host/dbname'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 # Gets rid of a warning
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -70,12 +70,13 @@ class AllUsers(Resource):
         all_user = problem_model.App_User.query.order_by(problem_model.App_User.point.desc()).all()
         users = []
         for person in all_user:
+            imgprof = problem_model.Profile_Img.query.filter_by(id=person.profileImgID).first()
             d = {
                 "username": person.username,
                 "point": person.point,
                 "attempt": person.attempt,
                 "streak": person.streak,
-                "imageID": person.profileImgID
+                "imageID": imgprof.img_url
             }
             users.append(d)
         return users
@@ -94,29 +95,25 @@ class Login(Resource):
 
 class UserStreak(Resource): 
     def put(self, user_ID):
-        try:
-            request_data = request.get_json()
-            new_streak = request_dat['streak']
-            user = getUserbyID(user_ID)
-            if user: 
-                user.streak = new_streak
-                db.session.commit()
-                return 200
-        except: 
-            abort(404, message="Input Error")
+        request_data = request.get_json()
+        new_streak = request_data['streak']
+        user = getUserbyID(user_ID)
+        if user: 
+            user.streak = new_streak
+            db.session.commit()
+            return 200
+    
 
 class UserPoint(Resource): 
     def put(self, user_ID): 
-        try:
-            request_data = request.get_json()
-            new_point = request_data['point']
-            user = getUserbyID(user_ID)
-            if user: 
-                user.point = new_point
-                db.session.commit()
-                return 200
-        except: 
-            abort(404, message="Input Error")
+        request_data = request.get_json()
+        new_point = request_data['point']
+        user = getUserbyID(user_ID)
+        if user: 
+            user.point = new_point
+            db.session.commit()
+            return 200
+        
 
 class UserAttempts(Resource): 
     def put(self, user_ID): 
