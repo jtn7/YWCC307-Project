@@ -9,7 +9,7 @@
 ## Endpoints 
 `GET /problem ` - Returns a single random problem.
 
-`POST  /login` - Returns user ID and username only. Expects parameter 'username' in the HTTP body, in order to fetch user info. 
+`POST  /login` - Returns user ID and username only. Expects parameter 'username' and 'profileImgID in the HTTP body, in order to fetch user info. If user not found in table, create new user 
 
 `GET /user/<user_ID>` - Returns user info: username, points, streak, attempts. 
 
@@ -18,6 +18,8 @@
 `PUT /user/<user_ID>/streak` - Updates user's streak attribute. Expects parameter 'streak' in HTTP body. 
 
 `PUT /user/<user_ID>/attempt` - Updates user's attempt attribute. Expects parameter 'attempt' in HTTP body. 
+
+`GET /allusers` - Gets a leaderboard of all users on database, sorted by point attribute
 
 
 ## Database Req 
