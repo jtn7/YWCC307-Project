@@ -25,8 +25,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
-	background-color: #ededed;
-	font-family: Arial, Helvetica, sans-serif;
+	background-image: url("img/Mathofun-wallpaper.png");
 }
 ol, ul {
 	list-style: none;
@@ -43,3 +42,5 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+@import url('//fonts.googleapis.com/css2?family=Fredoka+One');
